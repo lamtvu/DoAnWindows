@@ -48,7 +48,6 @@ namespace GantChart.Views
             cmbPriority.Text = "LOW";
 
         }
-
         private void tbAdd_Click(object sender, EventArgs e)
         {
             if (!CheckInput.CheckInputAddTask(tbTitle, tbPercentCompleted, dtpFDate, dtpTDate, cmbPriority,errorProvider1))
@@ -72,7 +71,6 @@ namespace GantChart.Views
             HienThi(TaskController.GetListTask());
 
         }
-
         private void tbSearchUser_TextChanged(object sender, EventArgs e)
         {
 
@@ -83,7 +81,6 @@ namespace GantChart.Views
                 lbSearchUser.Items.Add(item.UserName);
             }
         }
-
         private void lbSearchUser_DoubleClick(object sender, EventArgs e)
         {
             ListBox listBox = sender as ListBox;
@@ -102,7 +99,6 @@ namespace GantChart.Views
             lsbUsers.Items.Add(listBox.SelectedItem.ToString());
 
         }
-
 
         private void btDelete_Click(object sender, EventArgs e)
         {

@@ -33,6 +33,7 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btSort = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.cbbView = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -118,6 +119,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.PowderBlue;
+            this.panel1.Controls.Add(this.btSort);
             this.panel1.Controls.Add(this.label9);
             this.panel1.Controls.Add(this.cbbView);
             this.panel1.Controls.Add(this.label8);
@@ -148,6 +150,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(273, 753);
             this.panel1.TabIndex = 0;
+            // 
+            // btSort
+            // 
+            this.btSort.Location = new System.Drawing.Point(184, 718);
+            this.btSort.Name = "btSort";
+            this.btSort.Size = new System.Drawing.Size(75, 29);
+            this.btSort.TabIndex = 33;
+            this.btSort.Text = "Sort";
+            this.btSort.UseVisualStyleBackColor = true;
+            this.btSort.Click += new System.EventHandler(this.btSort_Click);
             // 
             // label9
             // 
@@ -435,5 +447,6 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox cbbView;
         private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.Button btSort;
     }
 }

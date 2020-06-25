@@ -17,6 +17,7 @@ namespace GantChart.Views
     public partial class GantChartMain : Form
     {
         MyPanel myPanel;
+        int sort = 0;
         List<TaskWork> tasks;
         public Action<object, EventArgs> LabelClick;
         public GantChartMain()
@@ -102,7 +103,7 @@ namespace GantChart.Views
                 if (frmuser.ShowDialog() == DialogResult.OK)
                 {
                     //myPanel.ListTask = TaskController.GetListTask();
-                    UpdateCBBView(); 
+                    UpdateCBBView();
                     HienThi();
                 }
             }
@@ -155,7 +156,7 @@ namespace GantChart.Views
             }
             foreach (var item in lstUser.Items)
             {
-                if (item.ToString()== listBox.SelectedItem.ToString())
+                if (item.ToString() == listBox.SelectedItem.ToString())
                 {
                     MessageBox.Show("User da ton tai", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -165,13 +166,13 @@ namespace GantChart.Views
         }
         private void lstUser_DoubleClick(object sender, EventArgs e)
         {
-            if (lstUser.SelectedItem == null )
+            if (lstUser.SelectedItem == null)
             {
                 return;
             }
             User user = UserController.GetUser(lstUser.SelectedItem.ToString());
 
-            using (frmUser2 frm = new frmUser2(user.Email,user.FullName,user.UserName,user.Phone,ImageController.ConvertToImage(user.ImageUrl)))
+            using (frmUser2 frm = new frmUser2(user.Email, user.FullName, user.UserName, user.Phone, ImageController.ConvertToImage(user.ImageUrl)))
             {
                 if (frm.ShowDialog() == DialogResult.OK)
                 {
@@ -180,9 +181,9 @@ namespace GantChart.Views
                         lstUser.Items.Remove(lstUser.SelectedItem);
                     }
                 }
-                
+
             }
-            
+
         }
         private void RefreshControll()
         {
@@ -211,32 +212,93 @@ namespace GantChart.Views
         {
             if (cbbView.Text == "" || cbbView.Text == "ALL")
             {
-                myPanel.ListTask = TaskController.GetListTask();
+                if (sort == 1)
+                {
+                    SortTaskFromDate(TaskController.GetListTask());
+                }
+                else
+                {
+                    if (sort == 2)
+                        SortTaskToDate(TaskController.GetListTask());
+                    else
+                        myPanel.ListTask = TaskController.GetListTask();
+                }
                 RefreshControll();
 
             }
             else
             {
-                myPanel.ListTask = UserController.GetUser(cbbView.Text).Tasks.ToList();
+
+                if (sort == 1)
+                {
+                    SortTaskFromDate(UserController.GetUser(cbbView.Text).Tasks.ToList());
+                }
+                else
+                {
+                    if (sort == 2)
+                        SortTaskToDate(UserController.GetUser(cbbView.Text).Tasks.ToList());
+                    else
+                        myPanel.ListTask = UserController.GetUser(cbbView.Text).Tasks.ToList();
+
+                }
                 RefreshControll();
 
             }
         }
-
         private void cbbView_SelectedValueChanged(object sender, EventArgs e)
         {
-            if ((sender as ComboBox).Text != "ALL" && (sender as ComboBox).Text != "")
+            HienThi();
+        }
+        private void SortTaskFromDate(List<TaskWork> listTask)
+        {
+            for (int i = 0; i < listTask.Count - 1; i++)
             {
-                myPanel.ListTask = UserController.GetUser(cbbView.Text).Tasks.ToList();
-                RefreshControll();
-
+                for (int j = i + 1; j < listTask.Count; j++)
+                {
+                    if (listTask[i].FromDate.Date > listTask[j].FromDate.Date)
+                    {
+                        TaskWork taskTemp = listTask[i];
+                        listTask[i] = listTask[j];
+                        listTask[j] = taskTemp;
+                    }
+                }
             }
-            else
+            myPanel.ListTask = listTask;
+        }
+        private void SortTaskToDate(List<TaskWork> listTask)
+        {
+            for (int i = 0; i < listTask.Count - 1; i++)
             {
-                myPanel.ListTask = TaskController.GetListTask();
-                RefreshControll();
-
+                for (int j = i + 1; j < listTask.Count; j++)
+                {
+                    if (listTask[i].ToDate.Date > listTask[j].ToDate.Date)
+                    {
+                        TaskWork taskTemp = listTask[i];
+                        listTask[i] = listTask[j];
+                        listTask[j] = taskTemp;
+                    }
+                }
             }
+            myPanel.ListTask = listTask;
+        }
+
+        private void btSort_Click(object sender, EventArgs e)
+        {
+            switch (sort)
+            {
+                case 0:
+                    sort = 1;
+                    break;
+                case 1:
+                    sort = 2;
+                    break;
+                case 2:
+                    sort = 0;
+                    break;
+                default:
+                    break;
+            }
+            HienThi();
         }
     }
 }
